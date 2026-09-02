@@ -10,10 +10,11 @@ Short project objective.
 - R
 - Packages: tidyverse
 - Quarto installed
+- test
 
 ## Run steps
-1. `Rscript src/analysis.R`
-2. `quarto render src/report.qmd`
+1. `Rscript analysis.R`
+2. `quarto render report.qmd`
 
 ## Expected output
 - report.html
