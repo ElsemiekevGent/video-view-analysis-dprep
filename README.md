@@ -18,3 +18,6 @@ Short project objective.
 
 ## Expected output
 - report.html
+
+## this is part of the summary
+### this is also part of the summary 
