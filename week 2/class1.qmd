@@ -1,0 +1,111 @@
+---
+title: "report"
+format: html
+---
+
+# one heading 
+sentence 1 
+sentence 2 
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+getwd()
+```
+
+
+
+```{r}
+list.files()
+```
+
+
+```{r}
+library(tidyverse)
+if (!file.exists("video_view.csv")) {
+data_url <- paste0(
+"https://raw.githubusercontent.com/hannesdatta/",
+"course-dprep/refs/heads/main/material/tutorials/r-bootcamp-rev/",
+"video_view.csv"
+)
+download.file(data_url, "video_view.csv")
+}
+videos <- read_csv("video_view.csv")
+```
+
+
+```{r}
+head(videos)
+names(videos)
+glimpse(videos)
+summary(videos$watch_rate)
+```
+
+# example 1
+```{r}
+high_quality <- videos %>%
+select(video_id, creator_id, impressions_n, watched_n, watch_rate) %>%
+filter(watch_rate >= 0.7, impressions_n >= 20)
+```
+
+```{r}
+nrow(high_quality)
+nrow(videos)
+```
+# example 2
+```{r}
+video_scores <- videos %>%
+mutate(
+watched_share = watched_n / impressions_n
+) %>%
+rename(
+impressions = impressions_n,
+watched = watched_n
+) %>%
+arrange(desc(watched_share))
+```
+
+# example 3
+```{r}
+videos %>%
+summarise(
+total_impressions = sum(impressions_n, na.rm = TRUE),
+avg_watch_rate = mean(watch_rate, na.rm = TRUE),
+n_videos = n()
+)
+```
+
+# example 4
+
+```{r}
+creator_summary <- videos %>%
+group_by(creator_id) %>%
+summarise(
+videos_n = n(),
+impressions_total = sum(impressions_n, na.rm = TRUE),
+watch_rate_avg = mean(watch_rate, na.rm = TRUE)
+) %>%
+arrange(desc(impressions_total))
+```
+
+
+# exercise 3
+```{r}
+top_watch <- videos |> 
+    select(video_id,creator_id,watch_rate,impressions_n) |> 
+    filter(impressions_n >= 50) |> 
+    arrange(desc(watch_rate))
+```
+
+# exercise 4
+```{r}
+videos |> 
+    mutate(engagement = watched_n/impressions_n) |> 
+    group_by(creator_id) |> 
+    summarise(
+        mean_engagement= mean(engagement, na.rm=TRUE)) |> 
+            arrange(desc(mean_engagement))
+```
+
